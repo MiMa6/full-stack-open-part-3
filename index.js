@@ -3,7 +3,11 @@ const morgan = require('morgan')
 
 const app = express()
 app.use(express.json())
-app.use(morgan('tiny'))
+
+morgan.token('response_body', function (req, res) { return JSON.stringify(req.body) })
+const tinyFormat = ':method :url :status :res[content-length] - :response-time ms'
+const responseBodyFormat = ':response_body'
+app.use(morgan(tinyFormat + ' ' + responseBodyFormat))
 
 let persons = [
     {
@@ -35,7 +39,7 @@ app.get('/', (request, response) => {
 app.get('/info', (request, response) => {
     const phonebookLenght = persons.length
     const currentDate = new Date();
-    
+
     const firstLine = `<p>Phonebook has info for ${phonebookLenght} people</p>`
     const secondLine = `<p>${currentDate}</p>`
     const message = firstLine + secondLine
@@ -49,7 +53,7 @@ app.get('/api/persons', (request, response) => {
 app.get('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
     const person = persons.find(person => person.id === id)
-    
+
     if (person) {
         response.json(person)
     } else {
@@ -60,13 +64,13 @@ app.get('/api/persons/:id', (request, response) => {
 app.delete('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
     persons = persons.filter(person => person.id !== id)
-    
+
     response.status(204).end()
 })
 
 app.post('/api/persons', (request, response) => {
     const body = request.body
-    
+
     if (!body.name) {
         return response.status(400).json({
             error: 'name is missing'
@@ -89,7 +93,7 @@ app.post('/api/persons', (request, response) => {
         id: Math.floor(Math.random() * 10000),
         name: body.name,
         number: body.number
-    
+
     }
 
     persons = persons.concat(person)
