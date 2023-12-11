@@ -9,6 +9,9 @@ const tinyFormat = ':method :url :status :res[content-length] - :response-time m
 const responseBodyFormat = ':response_body'
 app.use(morgan(tinyFormat + ' ' + responseBodyFormat))
 
+const cors = require('cors')
+app.use(cors())
+
 let persons = [
     {
         "id": 1,
