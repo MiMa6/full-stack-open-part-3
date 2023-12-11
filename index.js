@@ -28,6 +28,16 @@ app.get('/', (request, response) => {
     response.send('Main Page')
 })
 
+app.get('/info', (request, response) => {
+    const phonebookLenght = persons.length
+    const currentDate = new Date();
+    
+    const firstLine = `<p>Phonebook has info for ${phonebookLenght} people</p>`
+    const secondLine = `<p>${currentDate}</p>`
+    const message = firstLine + secondLine
+    response.send(message)
+})
+
 app.get('/api/persons', (request, response) => {
     response.json(persons)
 })
