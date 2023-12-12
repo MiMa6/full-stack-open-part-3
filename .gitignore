@@ -3,3 +3,9 @@ node_modules
 
 # Logs
 npm-debug.log*
+
+# VSC
+.vscode
+
+# ExampleApp
+exampleApp
