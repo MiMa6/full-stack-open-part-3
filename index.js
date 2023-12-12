@@ -15,30 +15,6 @@ app.use(morgan(tinyFormat + ' ' + responseBodyFormat))
 const cors = require('cors')
 app.use(cors())
 
-
-let persons = [
-    {
-        "id": 1,
-        "name": "Arto Hellas",
-        "number": "040-123456"
-    },
-    {
-        "id": 2,
-        "name": "Ada Lovelace",
-        "number": "39-44-5323523"
-    },
-    {
-        "id": 3,
-        "name": "Dan Abramov",
-        "number": "12-43-234345"
-    },
-    {
-        "id": 4,
-        "name": "Mary Poppendieck",
-        "number": "39-23-6423122"
-    }
-]
-
 app.get('/info', (request, response) => {
     const phonebookLenght = persons.length
     const currentDate = new Date();
@@ -51,14 +27,14 @@ app.get('/info', (request, response) => {
 
 app.get('/api/persons', (request, response) => {
     Person.find({})
-    .then(notes => {
-      console.log(notes)
-      response.json(notes)
-    })
-    .catch(error => {
-      console.log(error)
-      response.status(404).end()
-    })
+        .then(notes => {
+            console.log(notes)
+            response.json(notes)
+        })
+        .catch(error => {
+            console.log(error)
+            response.status(404).end()
+        })
 })
 
 app.get('/api/persons/:id', (request, response) => {
@@ -82,37 +58,39 @@ app.delete('/api/persons/:id', (request, response) => {
 app.post('/api/persons', (request, response) => {
     const body = request.body
 
-    if (!body.name) {
+    if (body.name === undefined || body.name === '') {
+        console.log('name is missing')
         return response.status(400).json({
             error: 'name is missing'
         })
     }
 
-    if (!body.number) {
+    if (body.number === undefined || body.number === '') {
+        console.log('number is missing')
         return response.status(400).json({
             error: 'number is missing'
         })
     }
 
-    if (persons.find(person => person.name === body.name)) {
-        return response.status(400).json({
-            error: 'Name must be unique'
-        })
-    }
-
-    const person = {
-        id: Math.floor(Math.random() * 10000),
+    const person = new Person({
         name: body.name,
-        number: body.number
+        number: body.number,
+    })
 
-    }
-
-    persons = persons.concat(person)
-    response.json(person)
+    person.save()
+        .then(savedPerson => {
+            response.json(savedPerson)
+        })
+        .catch(error => {
+            console.log(error)
+            response.status(400).send(
+                { error: 'saving failed' }
+            )
+        })
 })
 
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
+    console.log(`Server running on port ${PORT}`)
 })
