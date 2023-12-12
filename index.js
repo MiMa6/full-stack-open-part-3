@@ -15,37 +15,41 @@ app.use(morgan(tinyFormat + ' ' + responseBodyFormat))
 const cors = require('cors')
 app.use(cors())
 
-app.get('/info', (request, response) => {
-    const phonebookLenght = persons.length
-    const currentDate = new Date();
-
-    const firstLine = `<p>Phonebook has info for ${phonebookLenght} people</p>`
-    const secondLine = `<p>${currentDate}</p>`
-    const message = firstLine + secondLine
-    response.send(message)
+app.get('/info', (request, response,) => {
+    Person.find({})
+    .then(persons => {
+        const phonebookLenght = persons.length
+        console.log(`Number of persons in collection: ${phonebookLenght}`)
+        const currentDate = new Date();
+        const firstLine = `<p>Phonebook has info for ${phonebookLenght} people</p>`
+        const secondLine = `<p>${currentDate}</p>`
+        const message = firstLine + secondLine
+        response.send(message)
+    })
+    .catch(error => next(error))
 })
 
-app.get('/api/persons', (request, response) => {
+app.get('/api/persons', (request, response, next) => {
     Person.find({})
         .then(persons => {
             console.log(persons)
             response.json(persons)
         })
-        .catch(error => {
-            console.log(error)
-            response.status(404).end()
-        })
+        .catch(error => next(error))
 })
 
-app.get('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id)
-    const person = persons.find(person => person.id === id)
+app.get('/api/persons/:id', (request, response, next) => {
 
-    if (person) {
-        response.json(person)
-    } else {
-        response.status(404).end()
-    }
+    Person.findById(request.params.id)
+        .then(person => {
+            if (person) {
+                console.log(person)
+                response.json(person)
+            } else {
+                response.status(404).end()
+            }
+        })
+        .catch(error => next(error))
 
 })
 
@@ -98,12 +102,8 @@ app.post('/api/persons', (request, response) => {
         .then(savedPerson => {
             response.json(savedPerson)
         })
-        .catch(error => {
-            console.log(error)
-            response.status(400).send(
-                { error: 'saving failed' }
-            )
-        })
+        .catch(error => next(error))
+
 })
 
 const unknownEndpoint = (request, response) => {
