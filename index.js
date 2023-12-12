@@ -3,11 +3,16 @@ const morgan = require('morgan')
 
 const app = express()
 app.use(express.json())
+app.use(express.static('dist'))
 
 morgan.token('response_body', function (req, res) { return JSON.stringify(req.body) })
 const tinyFormat = ':method :url :status :res[content-length] - :response-time ms'
 const responseBodyFormat = ':response_body'
 app.use(morgan(tinyFormat + ' ' + responseBodyFormat))
+
+const cors = require('cors')
+app.use(cors())
+
 
 let persons = [
     {
@@ -31,10 +36,6 @@ let persons = [
         "number": "39-23-6423122"
     }
 ]
-
-app.get('/', (request, response) => {
-    response.send('Main Page')
-})
 
 app.get('/info', (request, response) => {
     const phonebookLenght = persons.length
@@ -101,6 +102,7 @@ app.post('/api/persons', (request, response) => {
 })
 
 
-const PORT = 3001
-app.listen(PORT)
-console.log(`Server running on port ${PORT}`)
+const PORT = process.env.PORT || 3001
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`)
+})
