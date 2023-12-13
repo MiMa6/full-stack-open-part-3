@@ -22,7 +22,7 @@ Content-Type: application/json
 
 {
   "name": "Luikuri Tattinen",
-  "number": "0-12345678"
+  "number": "1-1234567"
 }
 
 ### Too few numbers
@@ -32,6 +32,15 @@ Content-Type: application/json
 {
   "name": "Luikuri Tattinen",
   "number": "12-34567"
+}
+
+### Too few numbers 2
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "Luikuri Tattinen",
+  "number": "123-4567"
 }
 
 ### Malformatted id DELETE
