@@ -34,7 +34,7 @@ const personSchema = new mongoose.Schema({
             },
             {
                 validator: function (string) {
-                    return /\d{2,3}-\^\d+$/.test(string);
+                    return /\d{2,3}-\d+$/.test(string);
                 },
                 message: 'Person validation failed: number: Wrong format, example formats: 09-1234556 and 040-22334455'
             }
