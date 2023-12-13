@@ -1,9 +1,9 @@
-### Name is missing
+### Name len < 3
 POST http://localhost:3001/api/persons
 Content-Type: application/json
 
 {
-  "name": "",
+  "name": "Yo",
   "number": "040-987654"
 }
 
