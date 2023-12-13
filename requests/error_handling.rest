@@ -16,6 +16,24 @@ Content-Type: application/json
   "number": ""
 }
 
+### Number in wrong format 
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "Luikuri Tattinen",
+  "number": "0-12345678"
+}
+
+### Too few numbers
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "Luikuri Tattinen",
+  "number": "12-34567"
+}
+
 ### Malformatted id DELETE
 DELETE http://localhost:3001/api/persons/1
 

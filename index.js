@@ -83,7 +83,7 @@ app.post('/api/persons', (request, response, next) => {
         return response.status(400).json({ error: 'number is missing' })
     }
 
-    if (body.number === undefined || body.number === '') {
+    if (body.number === undefined) {
         console.log('number is missing')
         return response.status(400).json({ error: 'number is missing' })
     }
