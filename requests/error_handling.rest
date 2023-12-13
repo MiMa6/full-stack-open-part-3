@@ -1,9 +1,9 @@
-### Name is missing
+### Name len < 3
 POST http://localhost:3001/api/persons
 Content-Type: application/json
 
 {
-  "name": "",
+  "name": "Yo",
   "number": "040-987654"
 }
 
@@ -14,6 +14,33 @@ Content-Type: application/json
 {
   "name": "Taikuri Luttinen",
   "number": ""
+}
+
+### Number in wrong format 
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "Luikuri Tattinen",
+  "number": "1-1234567"
+}
+
+### Too few numbers
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "Luikuri Tattinen",
+  "number": "12-34567"
+}
+
+### Too few numbers 2
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "Luikuri Tattinen",
+  "number": "123-4567"
 }
 
 ### Malformatted id DELETE
