@@ -1,7 +1,26 @@
+### Person1
 POST http://localhost:3001/api/persons
 Content-Type: application/json
 
 {
   "name": "Taikuri Luttinen",
-  "number": "04-987566"
+  "number": "040-00000"
+}
+
+### Person2
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "Luikuri Tattinen",
+  "number": "12-345678"
+}
+
+### Person3
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "Laikuri Tuttinen",
+  "number": "123-45678"
 }
